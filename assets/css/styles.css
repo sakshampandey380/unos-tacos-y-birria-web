@@ -1,0 +1,2122 @@
+/* ============================================================================
+   UNOS TACOS Y BIRRIA — EXACT CUKU CAFE 1:1 DESIGN SYSTEM & RESPONSIVE ENGINE
+   Architecture: Pure Native HTML5 + Modern CSS3 + Vanilla JS (Zero Frameworks)
+   Design Benchmark: https://www.cukucafe.com/ & https://www.cukucafe.com/menu
+   Universal Responsive Coverage: 320px Smartphones -> 2560px+ 4K Displays
+   ============================================================================ */
+
+/* 1. EXACT CUKU CAFE DESIGN TOKENS & VARIABLES */
+:root {
+  /* Core Brand Palette (Exact CUKU Cafe Tokens) */
+  --color-warm-wood: #a87b4e;
+  --color-warm-wood-dark: #8b6538;
+  --color-deep-espresso: #2a1a0f;
+  --color-rich-coffee: #4e2e1a;
+  --color-cream-latte: #ffffff;
+  --color-soft-beige: #e3d5c8;
+  --color-macrame-sand: #c4b39a;
+  --color-honey-gold: #c9922e;
+  --color-neon-warm: #f5c86a;
+  --color-terracotta: #b85c3a;
+  --color-charcoal: #1f1612;
+  --color-soft-white: #faf8f5;
+  --color-sage-green: #7a8b6f;
+
+  /* Button Specific Colors (Exact CUKU Cafe Tokens) */
+  --color-button-primary: #452829;
+  --color-button-primary-hover: #5a3536;
+  --color-button-secondary: #fbf3d1;
+  --color-button-secondary-hover: #f0e6c4;
+  --color-button-secondary-text: #2a1a0f;
+
+  /* Semantic Colors */
+  --background: var(--color-cream-latte);
+  --foreground: var(--color-charcoal);
+
+  /* Typography (Exact CUKU Cafe Font Stack) */
+  --font-display: 'Delius', cursive;
+  --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-accent: 'Cormorant Garamond', Georgia, serif;
+  --font-logo: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Spacing & Layout */
+  --section-padding: clamp(3.5rem, 8vw, 7rem);
+  --container-max: 1280px;
+
+  /* Shadows & Glows (Exact CUKU Cafe Tokens) */
+  --shadow-warm: 0 4px 20px rgba(42, 26, 15, 0.10);
+  --shadow-warm-lg: 0 8px 40px rgba(42, 26, 15, 0.14);
+  --shadow-warm-hover: 0 12px 48px rgba(42, 26, 15, 0.18);
+  --glow-neon: 0 0 30px rgba(245, 200, 106, 0.4), 0 0 60px rgba(201, 146, 46, 0.2);
+  --glow-honey: 0 4px 24px rgba(201, 146, 46, 0.30);
+
+  /* Transitions */
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 2. BASE RESET & PIXEL-PERFECT VIEWPORT GUARD */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  background-color: var(--color-cream-latte);
+  color: var(--color-charcoal);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  max-width: 100vw;
+  position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  color: var(--color-deep-espresso);
+}
+
+img, svg, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+::selection {
+  background-color: var(--color-honey-gold);
+  color: var(--color-deep-espresso);
+}
+
+/* Custom Scrollbar (Exact CUKU Cafe) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-soft-beige);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-warm-wood);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-rich-coffee);
+}
+
+/* Top Scroll Progress Bar (#nprogress style) */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-honey-gold), var(--color-neon-warm));
+  box-shadow: 0 0 10px var(--color-honey-gold), 0 0 5px var(--color-honey-gold);
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* Subtle Grain Texture Overlay (Exact CUKU Cafe .grain-overlay) */
+.grain-overlay::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9990;
+}
+
+/* HD Image Crispness Filter */
+.hd-photo {
+  image-rendering: -webkit-optimize-contrast;
+  filter: contrast(1.03) saturate(1.05);
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* 3. CUKU CAFE UTILITY & LAYOUT CLASSES */
+.container-custom {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1rem, 4vw, 3rem);
+  padding-right: clamp(1rem, 4vw, 3rem);
+  width: 100%;
+}
+
+.section-padding {
+  padding-top: var(--section-padding);
+  padding-bottom: var(--section-padding);
+}
+
+.neon-glow {
+  color: var(--color-neon-warm);
+  text-shadow:
+    0 0 10px rgba(245, 200, 106, 0.6),
+    0 0 30px rgba(245, 200, 106, 0.3),
+    0 0 60px rgba(201, 146, 46, 0.15);
+}
+
+.font-display { font-family: var(--font-display); }
+.font-body { font-family: var(--font-body); }
+.font-accent { font-family: var(--font-accent); }
+.font-logo { font-family: var(--font-logo); }
+
+/* 4. CINEMATIC 0.9s LOGO PRELOADER */
+.cuku-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--color-deep-espresso);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  transition: opacity 0.45s var(--ease-smooth), visibility 0.45s var(--ease-smooth);
+}
+.cuku-preloader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.preloader-logo-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--color-honey-gold), var(--color-neon-warm));
+  box-shadow: var(--glow-neon);
+  animation: pulseGlow 1.2s ease-in-out infinite alternate;
+}
+.preloader-logo-ring img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.preloader-brand-title {
+  font-family: var(--font-logo);
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.16em;
+  color: var(--color-neon-warm);
+  text-transform: uppercase;
+}
+.preloader-sub {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-soft-beige);
+  opacity: 0.85;
+}
+@keyframes pulseGlow {
+  0% { transform: scale(0.95); }
+  100% { transform: scale(1.04); }
+}
+
+/* 5. IMMERSIVE 3D FLOATING TAQUERIA BACKGROUND & CORNER BISTRO BENCH SCENE */
+.ambient-3d-stage {
+  position: fixed;
+  inset: 0;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  z-index: 25;
+  overflow: hidden;
+}
+.floating-3d-item {
+  position: absolute;
+  transform-style: preserve-3d;
+  will-change: transform;
+  opacity: 0.22;
+  filter: drop-shadow(0 10px 18px rgba(42, 26, 15, 0.14));
+  animation: float3dDrift 14s ease-in-out infinite alternate;
+}
+.floating-3d-item svg {
+  width: 100%;
+  height: 100%;
+}
+.float-taco-1 { top: 14%; left: 3%; width: 52px; height: 52px; animation-duration: 13s; }
+.float-ramen-2 { top: 28%; right: 3.5%; width: 54px; height: 54px; animation-duration: 16s; animation-delay: -3s; }
+.float-lime-3 { top: 56%; left: 2.5%; width: 40px; height: 40px; animation-duration: 11s; animation-delay: -5s; }
+.float-horchata-4 { top: 70%; right: 3%; width: 48px; height: 48px; animation-duration: 15s; animation-delay: -2s; }
+.float-chili-5 { top: 40%; left: 4%; width: 38px; height: 38px; animation-duration: 12s; animation-delay: -7s; }
+.float-cola-6 { top: 82%; left: 3%; width: 44px; height: 44px; animation-duration: 17s; animation-delay: -4s; }
+
+@keyframes float3dDrift {
+  0% {
+    transform: translate3d(0, 0, 10px) rotateX(6deg) rotateY(-8deg) rotateZ(-4deg);
+  }
+  50% {
+    transform: translate3d(8px, -16px, 35px) rotateX(-6deg) rotateY(10deg) rotateZ(5deg);
+  }
+  100% {
+    transform: translate3d(-6px, 10px, 18px) rotateX(8deg) rotateY(-6deg) rotateZ(-3deg);
+  }
+}
+
+/* Corner Animated Bistro Bench Scene */
+.corner-bistro-scene {
+  position: fixed;
+  bottom: 14px;
+  left: 14px;
+  z-index: 38;
+  width: 156px;
+  height: 92px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(196, 179, 154, 0.65);
+  border-radius: 16px;
+  box-shadow: var(--shadow-warm);
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: auto;
+  transition: transform 0.3s var(--ease-smooth), opacity 0.3s ease;
+}
+.corner-bistro-scene:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+.corner-bistro-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-rich-coffee);
+}
+.corner-bistro-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+.bistro-svg {
+  width: 100%;
+  height: 62px;
+}
+.diner-left-arm {
+  transform-origin: 42px 34px;
+  animation: dinerClinkLeft 2.8s ease-in-out infinite;
+}
+.diner-right-arm {
+  transform-origin: 98px 34px;
+  animation: dinerClinkRight 2.8s ease-in-out infinite;
+}
+.steam-wisp {
+  animation: steamRise 2.2s ease-out infinite;
+}
+@keyframes dinerClinkLeft {
+  0%, 100% { transform: rotate(0deg); }
+  45%, 55% { transform: rotate(-16deg) translate(3px, -2px); }
+}
+@keyframes dinerClinkRight {
+  0%, 100% { transform: rotate(0deg); }
+  45%, 55% { transform: rotate(16deg) translate(-3px, -2px); }
+}
+@keyframes steamRise {
+  0% { opacity: 0.8; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-7px); }
+}
+
+/* 6. CUKU CAFE INTERACTIVE HOVER BUTTON (EXACT COMPONENT REPLICA) */
+.cuku-interactive-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 9999px;
+  border: 1px solid var(--color-button-primary);
+  background-color: #F2E8DC;
+  padding: 0.55rem 1.35rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-button-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s var(--ease-smooth);
+  min-height: 44px;
+  white-space: nowrap;
+}
+.cuku-interactive-btn .btn-initial {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.3s var(--ease-smooth), opacity 0.3s var(--ease-smooth);
+}
+.cuku-interactive-btn .btn-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: var(--color-button-primary);
+  transition: transform 0.3s var(--ease-smooth);
+  flex-shrink: 0;
+}
+.cuku-interactive-btn .btn-hover-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--color-button-primary);
+  color: var(--color-cream-latte);
+  transform: translateX(3rem);
+  opacity: 0;
+  transition: all 0.3s var(--ease-smooth);
+  border-radius: 9999px;
+  padding: 0 1.25rem;
+}
+.cuku-interactive-btn:hover {
+  border-color: var(--color-button-primary-hover);
+  box-shadow: var(--shadow-warm);
+}
+.cuku-interactive-btn:hover .btn-initial {
+  transform: translateX(3rem);
+  opacity: 0;
+}
+.cuku-interactive-btn:hover .btn-hover-layer {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Light/Hero Variant of Interactive Button */
+.cuku-interactive-btn.variant-hero {
+  background-color: #F2E8DC;
+  border-color: rgba(242, 232, 220, 0.6);
+  color: var(--color-button-primary);
+  padding: 0.75rem 1.75rem;
+  font-size: 0.95rem;
+}
+.cuku-interactive-btn.variant-outline-light {
+  background-color: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  padding: 0.75rem 1.65rem;
+  font-size: 0.95rem;
+}
+.cuku-interactive-btn.variant-outline-light .btn-dot {
+  background-color: var(--color-neon-warm);
+}
+.cuku-interactive-btn.variant-outline-light .btn-hover-layer {
+  background-color: var(--color-honey-gold);
+  color: var(--color-deep-espresso);
+}
+
+/* 7. PERSISTENT HEADER & NAVIGATION (EXACT CUKU CAFE HEADER) */
+.cuku-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 1.15rem 0;
+  background: transparent;
+  transition: all 0.45s var(--ease-smooth);
+}
+.cuku-header.is-scrolled,
+.cuku-header.header-solid {
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 0.65rem 0;
+  box-shadow: var(--shadow-warm);
+  border-bottom: 1px solid rgba(196, 179, 154, 0.35);
+}
+
+.cuku-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cuku-brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+.cuku-brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-honey-gold);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  flex-shrink: 0;
+}
+.cuku-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+.cuku-brand-name {
+  font-family: var(--font-logo);
+  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+.cuku-brand-sub {
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(227, 213, 200, 0.85);
+  margin-top: 2px;
+  transition: color 0.3s ease;
+}
+.cuku-header.is-scrolled .cuku-brand-name,
+.cuku-header.header-solid .cuku-brand-name {
+  color: var(--color-deep-espresso);
+}
+.cuku-header.is-scrolled .cuku-brand-sub,
+.cuku-header.header-solid .cuku-brand-sub {
+  color: var(--color-rich-coffee);
+}
+
+/* Desktop Navigation Links & Dropdowns */
+.cuku-desktop-nav {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+}
+@media (min-width: 1024px) {
+  .cuku-desktop-nav {
+    display: flex;
+  }
+}
+
+.cuku-nav-item {
+  position: relative;
+}
+.cuku-nav-trigger,
+.cuku-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  transition: all 0.25s ease;
+  min-height: 40px;
+}
+.cuku-header.is-scrolled .cuku-nav-trigger,
+.cuku-header.is-scrolled .cuku-nav-link,
+.cuku-header.header-solid .cuku-nav-trigger,
+.cuku-header.header-solid .cuku-nav-link {
+  color: var(--color-deep-espresso);
+}
+.cuku-nav-trigger:hover,
+.cuku-nav-link:hover,
+.cuku-nav-link.active {
+  color: var(--color-neon-warm);
+  background: rgba(255, 255, 255, 0.12);
+}
+.cuku-header.is-scrolled .cuku-nav-trigger:hover,
+.cuku-header.is-scrolled .cuku-nav-link:hover,
+.cuku-header.is-scrolled .cuku-nav-link.active,
+.cuku-header.header-solid .cuku-nav-trigger:hover,
+.cuku-header.header-solid .cuku-nav-link:hover,
+.cuku-header.header-solid .cuku-nav-link.active {
+  color: var(--color-honey-gold);
+  background: rgba(201, 146, 46, 0.10);
+}
+
+.cuku-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 210px;
+  background: var(--color-cream-latte);
+  border: 1px solid rgba(196, 179, 154, 0.5);
+  border-radius: 16px;
+  padding: 0.5rem;
+  box-shadow: var(--shadow-warm-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all 0.22s var(--ease-smooth);
+  z-index: 60;
+}
+.cuku-nav-item:hover .cuku-dropdown-menu,
+.cuku-nav-item:focus-within .cuku-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.cuku-dropdown-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-deep-espresso);
+  transition: all 0.2s ease;
+}
+.cuku-dropdown-link:hover {
+  background: var(--color-soft-beige);
+  color: var(--color-honey-gold);
+  padding-left: 1.05rem;
+}
+
+/* Header Right Actions */
+.cuku-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cuku-cart-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 9999px;
+  background: var(--color-button-primary);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  min-height: 44px;
+  box-shadow: var(--shadow-warm);
+  transition: all 0.25s ease;
+}
+.cuku-cart-trigger:hover {
+  background: var(--color-button-primary-hover);
+  transform: translateY(-1px);
+}
+.cuku-cart-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 9999px;
+  background: var(--color-neon-warm);
+  color: var(--color-deep-espresso);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.cuku-mobile-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: #ffffff;
+  transition: all 0.25s ease;
+}
+.cuku-header.is-scrolled .cuku-mobile-toggle,
+.cuku-header.header-solid .cuku-mobile-toggle {
+  color: var(--color-deep-espresso);
+}
+@media (min-width: 1024px) {
+  .cuku-mobile-toggle {
+    display: none;
+  }
+}
+
+/* Mobile Navigation Drawer */
+.cuku-mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(31, 22, 18, 0.65);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s var(--ease-smooth);
+}
+.cuku-mobile-drawer.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+.cuku-mobile-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(88vw, 360px);
+  background: var(--color-cream-latte);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: translateX(100%);
+  transition: transform 0.35s var(--ease-smooth);
+  overflow-y: auto;
+}
+.cuku-mobile-drawer.is-open .cuku-mobile-panel {
+  transform: translateX(0);
+}
+.cuku-mobile-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 1.25rem;
+}
+.cuku-mobile-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--color-deep-espresso);
+  background: rgba(227, 213, 200, 0.35);
+  min-height: 46px;
+}
+.cuku-mobile-links a:hover {
+  background: var(--color-soft-beige);
+  color: var(--color-honey-gold);
+}
+
+/* 8. HERO SECTION (EXACT CUKU CAFE FULL-BLEED HERO) */
+.cuku-hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-top: 6.5rem;
+  padding-bottom: 4.5rem;
+  overflow: hidden;
+}
+.cuku-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.cuku-hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.03);
+  animation: subtleHeroZoom 18s ease-in-out infinite alternate;
+}
+@keyframes subtleHeroZoom {
+  0% { transform: scale(1.02); }
+  100% { transform: scale(1.09); }
+}
+.cuku-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    95deg,
+    rgba(42, 26, 15, 0.84) 0%,
+    rgba(42, 26, 15, 0.64) 52%,
+    rgba(42, 26, 15, 0.42) 100%
+  );
+}
+.cuku-hero-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 9rem;
+  background: linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+.cuku-hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 42rem;
+}
+.cuku-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+.cuku-hero-eyebrow-line {
+  width: 2rem;
+  height: 1px;
+  background: var(--color-honey-gold);
+}
+.cuku-hero-eyebrow-text {
+  color: var(--color-neon-warm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.live-mst-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  background: rgba(31, 22, 18, 0.72);
+  border: 1px solid rgba(245, 200, 106, 0.45);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.live-mst-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+}
+.live-mst-dot.closed {
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+}
+
+.cuku-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.35rem, 6vw, 4.4rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.12;
+  margin-bottom: 1.35rem;
+}
+.cuku-hero-desc {
+  color: rgba(227, 213, 200, 0.95);
+  font-size: clamp(1rem, 2vw, 1.22rem);
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  max-width: 36rem;
+}
+.cuku-hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+}
+.cuku-hero-stats {
+  margin-top: 3rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.35rem;
+  font-size: 0.875rem;
+  color: rgba(227, 213, 200, 0.9);
+}
+.cuku-hero-stars {
+  color: var(--color-neon-warm);
+  letter-spacing: 0.08em;
+}
+.cuku-stat-divider {
+  width: 1px;
+  height: 1rem;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* 9. INTRO QUOTE BAND (EXACT CUKU CAFE) */
+.cuku-intro-band {
+  width: 100%;
+  background: var(--color-cream-latte);
+  padding: clamp(1.75rem, 4vw, 2.75rem) 0;
+  text-align: center;
+}
+.cuku-intro-band p {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2.2vw, 1.38rem);
+  color: var(--color-deep-espresso);
+  max-width: 58rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* 10. "THE FOOD" 8-IMAGE MOSAIC SECTION (EXACT CUKU CAFE) */
+.cuku-food-mosaic-section {
+  position: relative;
+  min-height: 72vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.cuku-food-mosaic-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+@media (min-width: 640px) {
+  .cuku-food-mosaic-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+.cuku-mosaic-cell {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+.cuku-mosaic-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-smooth);
+}
+.cuku-mosaic-cell:hover img {
+  transform: scale(1.08);
+}
+.cuku-mosaic-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 12, 8, 0.54);
+  pointer-events: none;
+}
+.cuku-mosaic-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 48rem;
+  padding: 3rem 1.25rem;
+}
+.cuku-mosaic-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+}
+.cuku-mosaic-desc {
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+
+/* 11. "WHAT WE OFFER" 6-TILE SERVICES GRID (EXACT CUKU CAFE) */
+.cuku-offer-section {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-cream-latte);
+}
+.cuku-section-header {
+  text-align: center;
+  margin-bottom: clamp(2rem, 4vw, 3.25rem);
+}
+.cuku-eyebrow {
+  display: inline-block;
+  color: var(--color-honey-gold);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.cuku-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--color-deep-espresso);
+}
+.cuku-section-subtitle {
+  color: rgba(78, 46, 26, 0.75);
+  max-width: 36rem;
+  margin: 0.75rem auto 0;
+  font-size: 0.98rem;
+}
+
+.cuku-offer-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  min-height: 540px;
+}
+@media (min-width: 640px) {
+  .cuku-offer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .cuku-offer-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, minmax(260px, 1fr));
+  }
+}
+.cuku-offer-tile {
+  position: relative;
+  overflow: hidden;
+  min-height: 240px;
+  cursor: pointer;
+}
+.cuku-offer-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-smooth);
+}
+.cuku-offer-tile:hover img {
+  transform: scale(1.1);
+}
+.cuku-offer-tile-shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(31, 22, 18, 0.52);
+  transition: background 0.5s ease;
+}
+.cuku-offer-tile:hover .cuku-offer-tile-shade {
+  background: rgba(31, 22, 18, 0.34);
+}
+.cuku-offer-tile-body {
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cuku-offer-icon-box {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  margin-bottom: 0.9rem;
+  transition: all 0.3s ease;
+}
+.cuku-offer-tile:hover .cuku-offer-icon-box {
+  background: rgba(201, 146, 46, 0.9);
+  border-color: var(--color-neon-warm);
+  transform: translateY(-3px);
+}
+.cuku-offer-tile h3 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+}
+.cuku-offer-tile p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 240px;
+}
+
+/* 12. "EXPERIENCE / MORE THAN JUST A TAQUERIA" MASONRY + 4 SPACE CARDS */
+.cuku-masonry-columns {
+  column-count: 1;
+  column-gap: 1rem;
+}
+@media (min-width: 480px) {
+  .cuku-masonry-columns {
+    column-count: 2;
+  }
+}
+@media (min-width: 768px) {
+  .cuku-masonry-columns {
+    column-count: 3;
+    column-gap: 1.25rem;
+  }
+}
+@media (min-width: 1024px) {
+  .cuku-masonry-columns {
+    column-count: 4;
+  }
+}
+.cuku-masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-warm);
+  background: var(--color-soft-beige);
+}
+@media (min-width: 768px) {
+  .cuku-masonry-item {
+    margin-bottom: 1.25rem;
+  }
+}
+.cuku-masonry-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s var(--ease-smooth);
+}
+.cuku-masonry-item:hover img {
+  transform: scale(1.07);
+}
+.cuku-masonry-caption {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(42, 26, 15, 0.78) 0%, transparent 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.cuku-masonry-item:hover .cuku-masonry-caption {
+  opacity: 1;
+}
+.cuku-masonry-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(201, 146, 46, 0.9);
+  color: var(--color-deep-espresso);
+  margin-bottom: 0.25rem;
+}
+.cuku-masonry-caption p {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* 4 Explore by Space Cards */
+.cuku-space-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  margin-top: 3rem;
+}
+@media (min-width: 640px) {
+  .cuku-space-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .cuku-space-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.cuku-space-card {
+  background: rgba(227, 213, 200, 0.48);
+  border: 1px solid rgba(196, 179, 154, 0.45);
+  border-radius: 1rem;
+  padding: 1.35rem;
+  transition: all 0.3s var(--ease-smooth);
+}
+.cuku-space-card:hover {
+  background: var(--color-soft-beige);
+  box-shadow: var(--shadow-warm);
+  transform: translateY(-3px);
+}
+.cuku-space-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.cuku-space-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: rgba(201, 146, 46, 0.16);
+  color: var(--color-honey-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+.cuku-space-card:hover .cuku-space-icon {
+  background: rgba(201, 146, 46, 0.28);
+}
+.cuku-space-card h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-deep-espresso);
+}
+.cuku-space-card p {
+  font-size: 0.78rem;
+  color: rgba(78, 46, 26, 0.72);
+  line-height: 1.55;
+}
+
+/* 13. INFINITE MARQUEE STRIP (EXACT CUKU CAFE) */
+.cuku-marquee-wrap {
+  overflow: hidden;
+  background: var(--color-soft-beige);
+  padding: 1.65rem 0;
+  border-top: 1px solid rgba(196, 179, 154, 0.4);
+  border-bottom: 1px solid rgba(196, 179, 154, 0.4);
+}
+.cuku-marquee-track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: cukuMarquee 32s linear infinite;
+}
+.cuku-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: rgba(78, 46, 26, 0.78);
+}
+.cuku-marquee-dot {
+  color: var(--color-honey-gold);
+  margin: 0 1.25rem;
+}
+@keyframes cukuMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* 14. CUKU CAFE HORIZONTAL MENU CARDS (EXACT TOP-SELLING & MENU PAGE CARDS) */
+.cuku-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 0.85rem;
+}
+@media (min-width: 640px) {
+  .cuku-menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+@media (min-width: 1024px) {
+  .cuku-menu-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1280px) {
+  .cuku-menu-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.cuku-product-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.8rem;
+  background: var(--color-soft-beige);
+  border: 1px solid rgba(196, 179, 154, 0.5);
+  border-radius: 0.85rem;
+  transition: all 0.3s var(--ease-smooth);
+  position: relative;
+  transform-style: preserve-3d;
+}
+.cuku-product-card:hover {
+  border-color: rgba(201, 146, 46, 0.55);
+  box-shadow: var(--shadow-warm);
+  transform: translateY(-2px);
+}
+.cuku-product-thumb {
+  position: relative;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 0.65rem;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-cream-latte);
+  cursor: pointer;
+}
+@media (min-width: 1024px) {
+  .cuku-product-thumb {
+    width: 5.15rem;
+    height: 5.15rem;
+  }
+}
+.cuku-product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease-smooth);
+}
+.cuku-product-card:hover .cuku-product-thumb img {
+  transform: scale(1.1);
+}
+/* Dietary Indicator Square (Exact CUKU Cafe top-left badge) */
+.cuku-diet-dot-box {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1.5px solid #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cuku-diet-dot-box.meat {
+  border-color: #b91c1c;
+}
+.cuku-diet-dot-box span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16a34a;
+}
+.cuku-diet-dot-box.meat span {
+  background: #b91c1c;
+}
+
+.cuku-product-info {
+  flex: 1;
+  min-width: 0;
+}
+.cuku-product-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.35rem;
+}
+.cuku-product-title {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-deep-espresso);
+  line-height: 1.25;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.cuku-product-card:hover .cuku-product-title {
+  color: var(--color-honey-gold);
+}
+.cuku-bestseller-pill {
+  flex-shrink: 0;
+  padding: 0.12rem 0.42rem;
+  font-size: 9px;
+  font-weight: 700;
+  background: rgba(201, 146, 46, 0.2);
+  color: var(--color-honey-gold);
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cuku-product-cat {
+  font-size: 0.72rem;
+  color: rgba(78, 46, 26, 0.62);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cuku-product-desc-short {
+  font-size: 0.72rem;
+  color: rgba(42, 26, 15, 0.75);
+  margin-top: 3px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.cuku-product-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.45rem;
+  gap: 0.4rem;
+}
+.cuku-product-price {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-honey-gold);
+}
+.cuku-product-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.cuku-info-btn {
+  padding: 0.28rem 0.5rem;
+  border-radius: 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--color-rich-coffee);
+  border: 1px solid rgba(196, 179, 154, 0.6);
+  transition: all 0.2s ease;
+}
+.cuku-info-btn:hover {
+  background: #ffffff;
+  color: var(--color-deep-espresso);
+}
+.cuku-order-mini-btn {
+  padding: 0.32rem 0.7rem;
+  border-radius: 0.5rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: var(--color-button-primary);
+  color: #ffffff;
+  transition: all 0.2s ease;
+  min-height: 32px;
+}
+.cuku-order-mini-btn:hover {
+  background: var(--color-honey-gold);
+  color: var(--color-deep-espresso);
+}
+
+/* 15. 4-CARD BENTO PROMO GRID (EXACT CUKU CAFE) */
+.cuku-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.25rem;
+}
+@media (min-width: 768px) {
+  .cuku-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .cuku-bento-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .cuku-bento-span-2 {
+    grid-column: span 2 / span 2;
+  }
+}
+.cuku-bento-card {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  min-height: 18rem;
+  box-shadow: var(--shadow-warm);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(1.35rem, 3vw, 2rem);
+}
+.cuku-bento-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-smooth);
+}
+.cuku-bento-card:hover img {
+  transform: scale(1.06);
+}
+.cuku-bento-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(31, 22, 18, 0.9) 0%, rgba(31, 22, 18, 0.45) 55%, rgba(31, 22, 18, 0.15) 100%);
+}
+.cuku-bento-body {
+  position: relative;
+  z-index: 5;
+}
+.cuku-bento-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(201, 146, 46, 0.28);
+  color: var(--color-neon-warm);
+  margin-bottom: 0.65rem;
+  backdrop-filter: blur(4px);
+}
+.cuku-bento-card h3 {
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+.cuku-bento-card p {
+  font-size: 0.875rem;
+  color: rgba(227, 213, 200, 0.9);
+  margin-bottom: 1.15rem;
+  max-width: 28rem;
+}
+
+/* 16. "OUR STORY / MEET THE MAKERS" 2-COLUMN SPLIT (EXACT CUKU CAFE) */
+.cuku-story-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+@media (min-width: 1024px) {
+  .cuku-story-grid {
+    grid-template-columns: 1.05fr 1fr;
+    gap: 4rem;
+  }
+}
+.cuku-story-collage {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  position: relative;
+}
+.cuku-story-collage-card {
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-warm-lg);
+  aspect-ratio: 4 / 5;
+}
+.cuku-story-collage-card:nth-child(2) {
+  margin-top: 2rem;
+}
+.cuku-story-collage-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-smooth);
+}
+.cuku-story-collage-card:hover img {
+  transform: scale(1.06);
+}
+.cuku-story-quote-box {
+  position: relative;
+  padding-left: 1.35rem;
+  border-left: 2px solid var(--color-honey-gold);
+  margin: 1.5rem 0;
+}
+.cuku-story-quote-box blockquote {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  color: var(--color-rich-coffee);
+  line-height: 1.55;
+}
+
+/* 17. WOODEN CORKBOARD TESTIMONIALS (EXACT CUKU CAFE) */
+.cuku-corkboard {
+  position: relative;
+  width: 100%;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: linear-gradient(135deg, #8B7355 0%, #6B5344 50%, #5C4033 100%);
+  box-shadow: inset 0 2px 20px rgba(0, 0, 0, 0.35), 0 10px 40px rgba(42, 26, 15, 0.22);
+  border: 6px solid #4e3624;
+}
+.cuku-corkboard-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.25rem;
+}
+@media (min-width: 768px) {
+  .cuku-corkboard-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+.cuku-pinned-note {
+  background: #FFFDF7;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  position: relative;
+  transition: transform 0.3s var(--ease-smooth);
+}
+.cuku-pinned-note:nth-child(1) { transform: rotate(-1.2deg); }
+.cuku-pinned-note:nth-child(2) { transform: rotate(1deg); }
+.cuku-pinned-note:nth-child(3) { transform: rotate(-0.8deg); }
+.cuku-pinned-note:hover {
+  transform: rotate(0deg) translateY(-4px) scale(1.02);
+}
+.cuku-pin-tack {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f5c86a, #b85c3a);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+  margin: 0 auto 0.85rem;
+}
+.cuku-pinned-note p {
+  font-size: 0.9rem;
+  color: var(--color-deep-espresso);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.cuku-pinned-author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px dashed rgba(196, 179, 154, 0.7);
+  padding-top: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-rich-coffee);
+}
+
+/* 18. "FIND US / VISIT OUR TAQUERIAS" LOCATION SWITCHER (EXACT CUKU CAFE) */
+.cuku-location-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+.cuku-loc-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: var(--color-cream-latte);
+  color: var(--color-rich-coffee);
+  border: 1px solid rgba(196, 179, 154, 0.6);
+  transition: all 0.25s ease;
+  min-height: 44px;
+}
+.cuku-loc-tab.active,
+.cuku-loc-tab:hover {
+  background: var(--color-button-primary);
+  color: #ffffff;
+  border-color: var(--color-button-primary);
+  box-shadow: var(--shadow-warm);
+}
+.cuku-loc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: stretch;
+}
+@media (min-width: 1024px) {
+  .cuku-loc-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.cuku-loc-photo-card {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-warm-lg);
+  min-height: 320px;
+}
+.cuku-loc-photo-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cuku-loc-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(42, 26, 15, 0.82) 0%, transparent 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.75rem;
+}
+.cuku-loc-details-card {
+  background: var(--color-cream-latte);
+  border-radius: 1.5rem;
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  box-shadow: var(--shadow-warm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cuku-loc-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.35rem;
+}
+.cuku-loc-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: rgba(201, 146, 46, 0.14);
+  color: var(--color-honey-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 19. BOOKING / DIRECT ORDER CTA BANNER & INSTAGRAM FEED */
+.cuku-cta-banner {
+  position: relative;
+  padding: clamp(4rem, 8vw, 6rem) 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--color-deep-espresso) 0%, var(--color-rich-coffee) 50%, var(--color-deep-espresso) 100%);
+  text-align: center;
+}
+.cuku-ig-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+@media (min-width: 768px) {
+  .cuku-ig-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.15rem;
+  }
+}
+@media (min-width: 1024px) {
+  .cuku-ig-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+.cuku-ig-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-warm);
+}
+.cuku-ig-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s var(--ease-smooth);
+}
+.cuku-ig-card:hover img {
+  transform: scale(1.1);
+}
+.cuku-ig-hover {
+  position: absolute;
+  inset: 0;
+  background: rgba(42, 26, 15, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.cuku-ig-card:hover .cuku-ig-hover {
+  opacity: 1;
+}
+
+/* 20. DEDICATED MENU PAGE (menu.html) — EXACT CUKU CAFE MENU REPLICA */
+.cuku-menu-hero {
+  padding-top: 7.25rem;
+  padding-bottom: 2rem;
+  background: linear-gradient(to bottom, var(--color-soft-beige) 0%, var(--color-cream-latte) 100%);
+  text-align: center;
+}
+.cuku-search-box {
+  position: relative;
+  max-width: 28rem;
+  margin: 1.5rem auto 0;
+}
+.cuku-search-input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.85rem;
+  background: var(--color-soft-beige);
+  border: 1px solid rgba(196, 179, 154, 0.75);
+  border-radius: 0.85rem;
+  font-size: 0.92rem;
+  color: var(--color-deep-espresso);
+  outline: none;
+  transition: all 0.25s ease;
+}
+.cuku-search-input:focus {
+  border-color: var(--color-honey-gold);
+  box-shadow: 0 0 0 3px rgba(201, 146, 46, 0.2);
+  background: #ffffff;
+}
+.cuku-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(78, 46, 26, 0.5);
+  pointer-events: none;
+}
+
+/* Sticky Category Bar (Exact CUKU Cafe /menu) */
+.cuku-sticky-catbar {
+  position: sticky;
+  top: 60px;
+  z-index: 40;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(196, 179, 154, 0.55);
+  box-shadow: 0 2px 12px rgba(42, 26, 15, 0.05);
+}
+.cuku-catbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0;
+}
+.cuku-cat-scroll-btn {
+  display: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-soft-beige);
+  color: var(--color-deep-espresso);
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+@media (min-width: 768px) {
+  .cuku-cat-scroll-btn {
+    display: inline-flex;
+  }
+}
+.cuku-cat-pills-track {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+  padding: 2px 4px;
+}
+.cuku-cat-pills-track::-webkit-scrollbar {
+  display: none;
+}
+.cuku-cat-pill {
+  padding: 0.5rem 1.05rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: rgba(227, 213, 200, 0.65);
+  color: var(--color-rich-coffee);
+  transition: all 0.22s ease;
+  min-height: 38px;
+}
+.cuku-cat-pill:hover {
+  background: var(--color-soft-beige);
+  color: var(--color-deep-espresso);
+}
+.cuku-cat-pill.active {
+  background: var(--color-button-primary);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(69, 40, 41, 0.25);
+}
+
+.cuku-menu-category-block {
+  margin-bottom: 2.75rem;
+  scroll-margin-top: 135px;
+}
+.cuku-menu-category-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(196, 179, 154, 0.45);
+}
+.cuku-menu-category-header h2 {
+  font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+  font-weight: 700;
+  color: var(--color-deep-espresso);
+}
+.cuku-menu-category-count {
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  background: var(--color-soft-beige);
+  color: var(--color-rich-coffee);
+}
+
+/* 21. CULINARY DETAIL MODAL & DIRECT ORDER CART DRAWER */
+.cuku-modal-backdrop,
+.cuku-cart-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  background: rgba(31, 22, 18, 0.68);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s var(--ease-smooth);
+}
+.cuku-modal-backdrop.is-open,
+.cuku-cart-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+.cuku-modal-card {
+  background: var(--color-cream-latte);
+  border-radius: 1.5rem;
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-warm-hover);
+  border: 1px solid var(--color-macrame-sand);
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.3s var(--ease-smooth);
+}
+.cuku-modal-backdrop.is-open .cuku-modal-card {
+  transform: translateY(0) scale(1);
+}
+.cuku-modal-img-wrap {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+}
+.cuku-modal-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cuku-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(31, 22, 18, 0.75);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+.cuku-modal-body {
+  padding: 1.5rem;
+}
+
+/* Direct Order Cart Drawer */
+.cuku-cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 98;
+  width: min(92vw, 400px);
+  background: var(--color-cream-latte);
+  box-shadow: -8px 0 40px rgba(31, 22, 18, 0.25);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s var(--ease-smooth);
+}
+.cuku-cart-backdrop.is-open .cuku-cart-drawer {
+  transform: translateX(0);
+}
+.cuku-cart-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(196, 179, 154, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-soft-beige);
+}
+.cuku-cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.cuku-cart-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.85rem;
+  background: rgba(227, 213, 200, 0.45);
+  border: 1px solid rgba(196, 179, 154, 0.45);
+}
+.cuku-cart-item img {
+  width: 52px;
+  height: 52px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+.cuku-cart-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid rgba(196, 179, 154, 0.5);
+  background: var(--color-soft-white);
+}
+
+/* 22. FOOTER (EXACT CUKU CAFE 4-COLUMN CHARCOAL FOOTER) */
+.cuku-footer {
+  background: var(--color-charcoal);
+  color: var(--color-cream-latte);
+  padding-top: 4rem;
+  padding-bottom: 2.5rem;
+}
+.cuku-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+@media (min-width: 768px) {
+  .cuku-footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .cuku-footer-grid {
+    grid-template-columns: 1.2fr 0.8fr 1.1fr 1.1fr;
+  }
+}
+.cuku-footer-col h4 {
+  color: var(--color-neon-warm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 1.15rem;
+}
+.cuku-footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.cuku-footer-links a {
+  font-size: 0.875rem;
+  color: rgba(227, 213, 200, 0.72);
+  transition: color 0.2s ease;
+}
+.cuku-footer-links a:hover {
+  color: var(--color-neon-warm);
+}
+.cuku-footer-bottom {
+  margin-top: 3.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.78rem;
+  color: rgba(227, 213, 200, 0.5);
+}
+
+/* 23. UNIVERSAL PHONE & MULTI-DEVICE PIXEL ADAPTATIONS (320px -> 4K) */
+@media (max-width: 639px) {
+  .corner-bistro-scene {
+    width: 124px;
+    height: 74px;
+    bottom: 10px;
+    left: 10px;
+    padding: 4px 7px;
+    opacity: 0.92;
+  }
+  .bistro-svg {
+    height: 48px;
+  }
+  .floating-3d-item {
+    opacity: 0.14;
+    transform: scale(0.75);
+  }
+  .cuku-brand-logo {
+    width: 38px;
+    height: 38px;
+  }
+  .cuku-brand-sub {
+    display: none;
+  }
+  .cuku-header-call-desktop {
+    display: none !important;
+  }
+  .cuku-hero {
+    padding-top: 5.5rem;
+    padding-bottom: 3.5rem;
+  }
+  .cuku-hero-ctas .cuku-interactive-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .cuku-masonry-caption {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(42, 26, 15, 0.75) 0%, transparent 65%);
+  }
+}
+
+@media (max-width: 374px) {
+  /* Ultra-compact phones (320px iPhone SE / Galaxy Fold cover) */
+  .container-custom {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .cuku-brand-name {
+    font-size: 0.92rem;
+  }
+  .cuku-cart-trigger {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.75rem;
+  }
+  .cuku-hero-title {
+    font-size: 1.95rem;
+  }
+  .cuku-product-card {
+    padding: 0.65rem;
+    gap: 0.65rem;
+  }
+  .cuku-product-thumb {
+    width: 3.85rem;
+    height: 3.85rem;
+  }
+}
